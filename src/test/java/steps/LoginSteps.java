@@ -2,14 +2,11 @@ package steps;
 
 import io.cucumber.java.en.*;
 import org.junit.Assert;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.DashboardPage;
 import pages.LoginPage;
+import utils.CommonMethods;
 import utils.ConfigReader;
 import utils.DriverManager;
-
-import java.time.Duration;
 
 public class LoginSteps {
 
@@ -30,17 +27,8 @@ public class LoginSteps {
     @When("the user enters a valid username")
     public void userEntersUsername() {
 
-        WebDriverWait wait =
-                new WebDriverWait(
-                        DriverManager.getDriver(),
-                        Duration.ofSeconds(10)
-                );
-
-        wait.until(
-                ExpectedConditions.visibilityOf(loginPage.usernameField)
-        );
-
-        loginPage.usernameField.sendKeys(
+        CommonMethods.sendText(
+                loginPage.usernameField,
                 ConfigReader.getProperty("username")
         );
     }
@@ -48,7 +36,8 @@ public class LoginSteps {
     @When("the user enters a valid password")
     public void userEntersPassword() {
 
-        loginPage.passwordField.sendKeys(
+        CommonMethods.sendText(
+                loginPage.passwordField,
                 ConfigReader.getProperty("password")
         );
     }
@@ -56,7 +45,7 @@ public class LoginSteps {
     @When("the user clicks on the login button")
     public void userClicksLogin() {
 
-        loginPage.loginButton.click();
+        CommonMethods.click(loginPage.loginButton);
     }
 
     @Then("the user should successfully navigate to the dashboard")
@@ -64,16 +53,9 @@ public class LoginSteps {
 
         DashboardPage dashboardPage = new DashboardPage();
 
-        WebDriverWait wait =
-                new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(10));
-
-        wait.until(
-                ExpectedConditions.visibilityOf(dashboardPage.dashboardHeader)
-        );
-
         Assert.assertEquals(
                 "Dashboard",
-                dashboardPage.dashboardHeader.getText()
+                CommonMethods.getText(dashboardPage.dashboardHeader)
         );
     }
 }
