@@ -3,7 +3,7 @@ package pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.DriverManager;
+import utils.CommonMethods;
 
 import java.util.List;
 
@@ -31,6 +31,6 @@ public class LoginPage {
     public WebElement passwordRequiredMessage;
 
     public LoginPage() {
-        PageFactory.initElements(DriverManager.getDriver(), this);
+        PageFactory.initElements(CommonMethods.getDriver(), this);
     }
 }

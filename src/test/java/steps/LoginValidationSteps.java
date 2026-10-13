@@ -5,7 +5,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import pages.LoginPage;
 import utils.CommonMethods;
-import utils.DriverManager;
+import utils.CommonMethods;
 
 public class LoginValidationSteps {
 
@@ -75,7 +75,7 @@ public class LoginValidationSteps {
     public void userShouldRemainOnLoginPage() {
 
         Assert.assertTrue(
-                DriverManager.getDriver()
+                CommonMethods.getDriver()
                         .getCurrentUrl()
                         .contains("auth/login")
         );
