@@ -6,7 +6,7 @@ import pages.DashboardPage;
 import pages.LoginPage;
 import utils.CommonMethods;
 import utils.ConfigReader;
-import utils.DriverManager;
+import utils.CommonMethods;
 
 public class LoginSteps {
 
@@ -15,11 +15,11 @@ public class LoginSteps {
     @Given("the user is on the SyntaxHRM login page")
     public void userIsOnLoginPage() {
 
-        DriverManager.getDriver().get(
+        CommonMethods.getDriver().get(
                 ConfigReader.getProperty("url")
         );
 
-        DriverManager.getDriver().manage().window().maximize();
+        CommonMethods.getDriver().manage().window().maximize();
 
         loginPage = new LoginPage();
     }
