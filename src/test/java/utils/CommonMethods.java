@@ -58,36 +58,47 @@ public class CommonMethods {
         return element.getText();
     }
 
+
     public static synchronized WebDriver getDriver() {
 
         if (driver == null) {
             String browser = ConfigReader.getProperty("browser");
+
             if (browser == null) {
                 browser = "chrome";
             }
 
+            boolean isJenkins = System.getenv("JENKINS_URL") != null;
+
             switch (browser.trim().toLowerCase()) {
+
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
-                    break;
                 case "chrome-headless":
                     WebDriverManager.chromedriver().setup();
+
                     ChromeOptions options = new ChromeOptions();
-                    options.addArguments("--headless=new");
-                    options.addArguments("--window-size=1920,1080");
+
+                    if (browser.equalsIgnoreCase("chrome-headless") || isJenkins) {
+                        options.addArguments("--headless=new");
+                        options.addArguments("--window-size=1920,1080");
+                        options.addArguments("--no-sandbox");
+                        options.addArguments("--disable-dev-shm-usage");
+                    }
+
                     driver = new ChromeDriver(options);
                     break;
+
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
                     break;
+
                 case "edge":
                     WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
+
                 default:
-                    // fallback to chrome
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver();
                     break;
@@ -96,6 +107,7 @@ public class CommonMethods {
 
         return driver;
     }
+
 
     public static void closeDriver() {
 
