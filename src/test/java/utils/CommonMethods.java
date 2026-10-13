@@ -62,23 +62,36 @@ public class CommonMethods {
     public static synchronized WebDriver getDriver() {
 
         if (driver == null) {
+
             String browser = ConfigReader.getProperty("browser");
 
-            if (browser == null) {
+            if (browser == null || browser.trim().isEmpty()) {
                 browser = "chrome";
             }
 
+            browser = browser.trim().toLowerCase();
+
             boolean isJenkins = System.getenv("JENKINS_URL") != null;
 
-            switch (browser.trim().toLowerCase()) {
+            switch (browser) {
 
                 case "chrome":
                 case "chrome-headless":
-                    WebDriverManager.chromedriver().setup();
+
+                    if (isJenkins) {
+                        // Jenkins uses Chromium version 147
+                        WebDriverManager.chromedriver()
+                                .browserVersion("147")
+                                .setup();
+                    } else {
+                        // Automatically manage local ChromeDriver
+                        WebDriverManager.chromedriver().setup();
+                    }
 
                     ChromeOptions options = new ChromeOptions();
 
-                    if (browser.equalsIgnoreCase("chrome-headless") || isJenkins) {
+                    if (isJenkins || browser.equals("chrome-headless")) {
+
                         options.addArguments("--headless=new");
                         options.addArguments("--window-size=1920,1080");
                         options.addArguments("--no-sandbox");
@@ -89,16 +102,19 @@ public class CommonMethods {
                     break;
 
                 case "firefox":
+
                     WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
                     break;
 
                 case "edge":
+
                     WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
 
                 default:
+
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver();
                     break;
@@ -107,7 +123,6 @@ public class CommonMethods {
 
         return driver;
     }
-
 
     public static void closeDriver() {
 
