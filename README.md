@@ -26,7 +26,7 @@ The baseline framework includes:
 
 - Maven dependencies
 - ConfigReader
-- DriverManager
+- CommonMethods (driver management)
 - CommonMethods
 - LoginPage
 - DashboardPage

@@ -11,13 +11,9 @@ import org.junit.runner.RunWith;
         plugin = {
                 "pretty",
                 "html:target/cucumber-report.html",
-<<<<<<< HEAD
                 "json:target/cucumber.json",
                 "junit:target/cucumber.xml"
-=======
-                "json:target/cucumber.json"
->>>>>>> origin/main
-        }
+            }
 )
 public class TestRunner {
 }
